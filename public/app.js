@@ -22,16 +22,32 @@ $(document).ready(function(){
             })
         }
     });
-    // $(".task").click(function(task){
-    //     $.put('/api/todos', {name: })
-    //     task.addClass("done");
-    // })
+    //add click listener to already existing ul class of ".list" because all li are generated after page loads
+    $(".list").on('click', 'span', function(){
+        deleteTodo($(this).parent());
+    })
 })
 
 function addTodo(todo) {
     let newTodo = $('<li class="task">' + todo.name + '<span>X</span></li>')
-            if(todo.completed){
-                newTodo.addClass("done");
-            }
-            $(".list").append(newTodo);
+    newTodo.data('id', todo._id)
+    if(todo.completed){
+        newTodo.addClass("done");
+    }
+    $(".list").append(newTodo);
+}
+
+function deleteTodo(todo) {
+    let clickedId = todo.data('id')
+    let deleteUrl = '/api/todos/' + clickedId
+    $.ajax({
+        method: 'DELETE',
+        url: deleteUrl
+    })
+    .then(function(data){
+        todo.remove();
+    })
+    .catch(function(err){
+        console.log(err);
+    })
 }

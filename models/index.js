@@ -1,3 +1,4 @@
+//Initiates mongoose and connects to local instance of MongoDB API
 const mongoose = require('mongoose');
 mongoose.set('debug', true);
 mongoose.set('useUnifiedTopology', true);

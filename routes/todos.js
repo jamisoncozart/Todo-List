@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models/index');
 
-
+//API root route. Displays entire todo's collection from DB as JSON
 router.get('/', function(req, res) {
     //calls mongo to find all "Todo"s in our DB
     db.Todo.find()
@@ -14,6 +14,7 @@ router.get('/', function(req, res) {
     })
 });
 
+//Post request to root route will create new todo in DB
 router.post('/', function(req, res) {
     db.Todo.create(req.body)
     .then(function(newTodo){
@@ -24,6 +25,7 @@ router.post('/', function(req, res) {
     })
 });
 
+//Get request to specific todo ID will respond with specific todo JSON
 router.get('/:todoID', function(req, res) {
     db.Todo.findById(req.params.todoID)
     .then(function(foundTodo) {
@@ -34,6 +36,7 @@ router.get('/:todoID', function(req, res) {
     })
 });
 
+//Put request to secific todo ID will find todo in DB and update with request body parameters
 router.put('/:todoID', function(req, res) {
     db.Todo.findByIdAndUpdate({_id: req.params.todoID}, req.body, {new: true})
     .then(function(updatedTodo) {
@@ -44,6 +47,7 @@ router.put('/:todoID', function(req, res) {
     })
 });
 
+//Delete request to specific todo ID will delete todo with ID from DB
 router.delete('/:todoID', function(req, res) {
     db.Todo.deleteOne({_id: req.params.todoID})
     .then(function(deletedTodo){
@@ -54,4 +58,5 @@ router.delete('/:todoID', function(req, res) {
     })
 })
 
+//exports router object containing all routes
 module.exports = router;
